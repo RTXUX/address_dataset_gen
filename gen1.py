@@ -1,11 +1,3 @@
-import time
-
-import sqlalchemy
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, UniqueConstraint, Index
-from sqlalchemy.orm import relationship
-from sqlalchemy import and_
-from api import guess
 import re
 import random
 from model import *

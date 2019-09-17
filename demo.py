@@ -1,15 +1,5 @@
-import sqlalchemy
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, UniqueConstraint, Index
-from sqlalchemy.orm import relationship
-from sqlalchemy import and_
-from api import guess
 from sqlalchemy.sql import func
-from sqlalchemy.orm import load_only
 import atexit
-import re
-import random
-import json
 from flask import Flask
 from apscheduler.schedulers.background import BackgroundScheduler
 from model import *
