@@ -39,7 +39,7 @@ def process_omit(entry):
     o=False
     if (entry.city == "") or (entry.country == "") or (entry.town == ""): o = True
     rand = random.random()
-    if (not o) and entry.country[-1]=="县":
+    if (not o) and (entry.province not in direct_city) and entry.country[-1]=="县":
         if random.random()<0.1:
             entry.city=""
     if (not o) and (rand<0.1):

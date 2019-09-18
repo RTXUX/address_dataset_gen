@@ -163,6 +163,6 @@ class EntryVar3(Base):
         comp_str = "%s,%s." % (self.name, comp_str)
         return comp_str
 
-engine = sqlalchemy.create_engine('Sensitive Information Reducted')
+engine = sqlalchemy.create_engine('mysql+pymysql://root:Password0@localhost/address?charset=utf8mb4')
 DBSession = sqlalchemy.orm.sessionmaker(bind=engine)
 session = DBSession()

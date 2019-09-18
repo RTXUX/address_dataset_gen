@@ -64,6 +64,7 @@ if __name__=='__main__':
     input_data=[]
     answer=[]
     for entry in session.query(Entry).all():
+        entry.composed_string = entry.compose_string()
         input_data.append(f"1!{entry.composed_string}\n")
         answer.append({
                 "姓名": entry.name,
@@ -72,6 +73,7 @@ if __name__=='__main__':
                     entry.province, entry.city, entry.country, entry.town, entry.detail_address
                 ]
         })
+    session.commit()
     for entry2 in session.query(EntryVar2).all():
         input_data.append(f"2!{entry2.composed_string}\n")
         answer.append({
@@ -82,6 +84,7 @@ if __name__=='__main__':
                     entry2.detail_address
                 ]
         })
+    session.commit()
 
     for entry3 in session.query(EntryVar3).all():
         input_data.append(f"3!{entry3.composed_string}\n")
@@ -93,7 +96,7 @@ if __name__=='__main__':
                 entry3.detail_address
             ]
         })
-
+    session.commit()
     with open("input.txt", "w") as input_file:
         input_file.writelines(input_data)
     with open("answer.txt", "w") as answer_file:
