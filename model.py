@@ -153,7 +153,7 @@ class EntryVar3(Base):
         i = random.choice(range(0,4))
         while (addr[i]==""): i = random.choice(range(0,4))
         addr[i]=""
-        if (random.random()<0.1) :
+        if (random.random()<0.2) :
             while (addr[i] == ""): i = random.choice(range(0, 4))
             addr[i]=""
         comp_str = "".join((addr[0], addr[1], addr[2], addr[3], self.road, self.house_number, self.detail_address))
@@ -163,6 +163,6 @@ class EntryVar3(Base):
         comp_str = "%s,%s." % (self.name, comp_str)
         return comp_str
 
-engine = sqlalchemy.create_engine('mysql+pymysql://root:Password0@localhost/address?charset=utf8mb4')
+engine = sqlalchemy.create_engine('mysql+pymysql://root:@localhost/address?charset=utf8mb4')
 DBSession = sqlalchemy.orm.sessionmaker(bind=engine)
 session = DBSession()

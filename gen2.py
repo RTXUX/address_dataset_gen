@@ -43,13 +43,16 @@ def fulfill():
 def mark_dataset():
     while True:
         guest_id = int(input("ID: "))
+        if (session.query(EntryVar3).filter(EntryVar3.parent_id==guest_id).one_or_none() is not None):
+            print("Duplicate")
+            continue
         guest_address = session.query(GuestAddress).filter(GuestAddress._id==guest_id).first()
         village = guest_address.parent
         town = village.parent
         country = town.parent
         city = country.parent
         province = city.parent
-        entry = EntryVar2(name=get_name(), phone=get_phone(), parent_id=guest_id,  province=province.name,city=city.name,country=country.name,town=town.name)
+        entry = EntryVar3(name=get_name(), phone=get_phone(), parent_id=guest_id,  province=province.name,city=city.name,country=country.name,town=town.name)
         print(guest_address.name)
         entry.road = input("路: ")
         entry.house_number = input("门牌号: ")
@@ -57,38 +60,43 @@ def mark_dataset():
         session.add(entry)
         session.commit()
 
+def my_shuffle(input):
+    random.shuffle(input)
+    return input
 
-
-if __name__=='__main__':
+def gen_text():
     import json
-    input_data=[]
-    answer=[]
-    for entry in session.query(Entry).all():
+    input_data = []
+    answer = []
+    for entry in my_shuffle(session.query(Entry).all()):
         entry.composed_string = entry.compose_string()
-        input_data.append(f"1!{entry.composed_string}\n")
+        input_data.append(f"1!{entry.composed_string}\r\n")
         answer.append({
-                "姓名": entry.name,
-                "手机": entry.phone,
-                "地址": [
-                    entry.province, entry.city, entry.country, entry.town, entry.detail_address
-                ]
+            "level": 1,
+            "姓名": entry.name,
+            "手机": entry.phone,
+            "地址": [
+                entry.province, entry.city, entry.country, entry.town, entry.detail_address
+            ]
         })
     session.commit()
-    for entry2 in session.query(EntryVar2).all():
-        input_data.append(f"2!{entry2.composed_string}\n")
+    for entry2 in my_shuffle(session.query(EntryVar2).all()):
+        input_data.append(f"2!{entry2.composed_string}\r\n")
         answer.append({
-                "姓名": entry2.name,
-                "手机": entry2.phone,
-                "地址": [
-                    entry2.province, entry2.city, entry2.country, entry2.town, entry2.road, entry2.house_number,
-                    entry2.detail_address
-                ]
+            "level": 2,
+            "姓名": entry2.name,
+            "手机": entry2.phone,
+            "地址": [
+                entry2.province, entry2.city, entry2.country, entry2.town, entry2.road, entry2.house_number,
+                entry2.detail_address
+            ]
         })
     session.commit()
 
-    for entry3 in session.query(EntryVar3).all():
-        input_data.append(f"3!{entry3.composed_string}\n")
+    for entry3 in my_shuffle(session.query(EntryVar3).all()):
+        input_data.append(f"3!{entry3.composed_string}\r\n")
         answer.append({
+            "level": 3,
             "姓名": entry3.name,
             "手机": entry3.phone,
             "地址": [
@@ -101,3 +109,7 @@ if __name__=='__main__':
         input_file.writelines(input_data)
     with open("answer.txt", "w") as answer_file:
         answer_file.write(json.dumps(answer, ensure_ascii=False))
+
+if __name__=='__main__':
+    gen_text()
+
